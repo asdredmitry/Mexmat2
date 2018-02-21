@@ -11,11 +11,11 @@ int main(int argc, char **argv)
 	double *a;
 	double *b;
 	double *x;
+        double *y;
 	double t;
 	int rows;
 	int my_rank, p;
 	int err1, err2;
-
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
@@ -23,16 +23,23 @@ int main(int argc, char **argv)
 	if (argc == 2) n = atoi(argv[1]);
 	else
 	{
-		if (my_rank == 0) printf("Not correct usage.\n");
+		if (my_rank == 0) std :: cout << "Not correct usage " << std :: endl;//printf("Not correct usage.\n");
 
 		MPI_Finalize();
 
 		return 1;
 	}
-
 	if (my_rank + 1 > n%p) rows = n/p;
 	else rows = n/p + 1;
 
+        if(my_rank == 0)
+        {
+            y = AllocVector(n + 1);
+            for(int i = 0; i < n + 1; i++)
+                y[i] = 0;
+        }
+        else 
+            y = NULL;
 	a = AllocVector(rows * n);
 	b = AllocVector(rows);
 	x = AllocVector(n + 1);
@@ -70,10 +77,16 @@ int main(int argc, char **argv)
 	t = MPI_Wtime() - t;
 
 	if (my_rank == 0) printf("\nSolution:\n");
-	OutputVector(n, b, x, my_rank, p);
+	OutputVector(n, b, x, y, my_rank, p);
 
 	if (my_rank == 0) printf("\n\nSolution time = %e\n", t);
 
+        if(my_rank == 0)
+        {
+            for(int i = 0; i < n; i++)
+                std :: cout << y[i] << " ";
+        }
+        std :: cout  << std :: endl;
 	free(a);
 	free(b);
 	free(x);

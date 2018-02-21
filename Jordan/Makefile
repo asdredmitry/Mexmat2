@@ -1,25 +1,13 @@
-NAME	= MPI
+all : main
 
-DEBUG	= -O3
-CC	= mpicc -c
-LD	= mpicc
-CFLAGS	= $(DEBUG) -W -Wall
-LIBS	= -lm
-LDFLAGS	= $(DEBUG)
-
-OBJS = main.o help.o sol.o
-
-all: $(NAME)
-
-$(NAME) : $(OBJS)
-	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
-
-.c.o:
-	$(CC) $(CFLAGS) $< -o $@
-
-clean:
-	rm -rf $(OBJS) $(NAME)
-
-main.o		: main.c help.h sol.h
-help.o		: help.c help.h
-sol.o		: sol.c sol.h
+help.o : help.cpp 
+	mpic++ -c help.cpp -o help.o
+sol.o : sol.cpp 
+	mpic++ -c sol.cpp -o sol.o
+main.o : main.cpp 
+	mpic++ -c main.cpp -o main.o
+main : main.o sol.o help.o
+	mpic++ main.o sol.o help.o -o main
+	
+clean : 
+	rm -rf main.o sol.o help.o main

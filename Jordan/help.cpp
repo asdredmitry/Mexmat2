@@ -73,23 +73,25 @@ void OutputMatrix(int n, double *a, double *b, double *x, int my_rank, int p)
 	}
 }
 
-void OutputVector(int n, double *b, double *x, int my_rank, int p)
+void OutputVector(int n, double *b, double *x, double * y, int my_rank, int p)
 {
 	int i, m;
 	MPI_Status status;
-
-	m = (n < MAX_OUTPUT_SIZE) ? n : MAX_OUTPUT_SIZE;
-
+        m = n;
 	for (i = 0; i < m; i++)
 	{
 		if (my_rank == 0)
 		{
 			if (my_rank == i%p)
+                        {
 				printf("%10.3g ", b[i/p]);
+                                y[i] = b[i/p];
+                        }
 			else
 			{
 				MPI_Recv(x, 1, MPI_DOUBLE, i%p, 0, MPI_COMM_WORLD, &status);
 				printf("%10.3g ", x[0]);
+                                y[i] = x[0];
 			}
 		}
 		else if (my_rank == i%p)

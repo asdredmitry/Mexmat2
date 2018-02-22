@@ -16,6 +16,7 @@ int main(int argc, char **argv)
 	int rows;
 	int my_rank, p;
 	int err1, err2;
+    srand(time(NULL));
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
@@ -81,12 +82,13 @@ int main(int argc, char **argv)
 
 	if (my_rank == 0) printf("\n\nSolution time = %e\n", t);
 
-        if(my_rank == 0)
-        {
-            for(int i = 0; i < n; i++)
-                std :: cout << y[i] << " ";
-        }
-        std :: cout  << std :: endl;
+    if(my_rank == 0)
+    {
+        std :: cout << " Solution accuracy " << SolutionAccuracy(n,y) << std :: endl;
+        for(int i = 0; i < n; i++)
+            std :: cout << y[i] << " | ";
+        std :: cout << std :: endl;
+    }
 	free(a);
 	free(b);
 	free(x);

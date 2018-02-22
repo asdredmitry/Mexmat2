@@ -8,7 +8,7 @@
 
 double f(int i, int j)
 {
-	return 1.0/(i + j + 1.0);
+	return i - j;
 }
 
 double *AllocVector(int size)
@@ -78,6 +78,7 @@ void OutputVector(int n, double *b, double *x, double * y, int my_rank, int p)
 	int i, m;
 	MPI_Status status;
         m = n;
+        //m = (n < MAX_OUTPUT_SIZE) ? n : MAX_OUTPUT_SIZE;
 	for (i = 0; i < m; i++)
 	{
 		if (my_rank == 0)
@@ -100,4 +101,23 @@ void OutputVector(int n, double *b, double *x, double * y, int my_rank, int p)
 			MPI_Send(x, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
 		}
 	}
+}
+double SolutionAccuracy(int n, double* x)
+{
+	int i;
+	double tmp;
+	double rezult;
+
+	rezult = 0.0;
+	for (i = 0; i < n; ++i)
+	{
+		tmp = x[i];
+
+		if (i % 2 == 0)
+			tmp -= 1.0;
+
+		rezult += tmp * tmp;
+	}
+
+	return sqrt(rezult);
 }

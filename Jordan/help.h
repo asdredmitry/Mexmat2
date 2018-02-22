@@ -1,6 +1,8 @@
 #ifndef __HELP_H__
 #define __HELP_H__
 #include <iostream>
+#include <math.h>
+#include <time.h>
 
 double f(int i, int j);
 
@@ -11,5 +13,7 @@ void InputMatrix(int n, double *a, double *b, int my_rank, int p);
 void OutputMatrix(int n, double *a, double *b, double *x, int my_rank, int p);
 
 void OutputVector(int n, double *b, double *x, double *y, int my_rank, int p);
+
+double SolutionAccuracy(int n, double * x);
 
 #endif

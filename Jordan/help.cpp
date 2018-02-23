@@ -8,7 +8,7 @@
 
 double f(int i, int j)
 {
-	return i - j;
+	return 1.0/(i + j + 1.0);
 }
 
 double *AllocVector(int size)

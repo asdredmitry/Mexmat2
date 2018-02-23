@@ -85,9 +85,9 @@ int main(int argc, char **argv)
     if(my_rank == 0)
     {
         std :: cout << " Solution accuracy " << SolutionAccuracy(n,y) << std :: endl;
-        for(int i = 0; i < n; i++)
-            std :: cout << y[i] << " | ";
-        std :: cout << std :: endl;
+        //for(int i = 0; i < n; i++)
+            //std :: cout << y[i] << " | ";
+        ///std :: cout << std :: endl;
     }
 	free(a);
 	free(b);
